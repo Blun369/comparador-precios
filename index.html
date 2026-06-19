@@ -1,21 +1,21 @@
-html
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Buscador de Productos</title>
+<title>Comparador por Categorías</title>
 
 <style>
 
 body{
-font-family:Arial,sans-serif;
+font-family:Arial;
 padding:20px;
 background:#f5f5f5;
 }
 
-input,button{
+input,select,button{
 width:100%;
 padding:12px;
 margin-top:10px;
@@ -32,8 +32,8 @@ border-radius:10px;
 box-shadow:0 0 5px rgba(0,0,0,.1);
 }
 
-.tienda{
-margin-top:10px;
+h2{
+margin-bottom:10px;
 }
 
 </style>
@@ -41,79 +41,101 @@ margin-top:10px;
 
 <body>
 
-<h2>🔎 Buscador de Productos</h2>
+<h2>🔎 Buscador Inteligente</h2>
 
-<input
-id="producto"
-placeholder="Escribe el producto"
->
+<input id="producto" placeholder="Ej: tornillo M6, Glicoisdin 8%, laptop">
 
-<button onclick="generarBusqueda()">
-🚀 Generar búsquedas
+<select id="categoria">
+
+<option value="general">⭐ General</option>
+<option value="farmacia">💊 Farmacia</option>
+<option value="ferreteria">🔩 Ferretería</option>
+<option value="electronica">💻 Electrónica</option>
+<option value="hogar">🏠 Hogar</option>
+
+</select>
+
+<button onclick="buscar()">
+Buscar
 </button>
 
 <div id="resultados"></div>
 
 <script>
 
-function generarBusqueda(){
+function buscar(){
 
 let producto =
 document.getElementById("producto").value.trim();
+
+let categoria =
+document.getElementById("categoria").value;
 
 if(producto===""){
 alert("Escribe un producto");
 return;
 }
 
-const tiendas = [
+const tiendas = {
 
-{
-nombre:"Mercado Libre",
-url:"https://www.mercadolibre.com.mx/"
-},
+general: [
+["Google Shopping","https://www.google.com/search?tbm=shop&q="],
+["Amazon","https://www.amazon.com.mx/s?k="],
+["Mercado Libre","https://www.mercadolibre.com.mx/s?k="],
+["Walmart","https://super.walmart.com.mx/search?q="]
+],
 
-{
-nombre:"Amazon México",
-url:"https://www.amazon.com.mx/s?k="
-},
+farmacia: [
+["Amazon","https://www.amazon.com.mx/s?k="],
+["Mercado Libre","https://www.mercadolibre.com.mx/s?k="],
+["Prixz","https://www.prixz.com/search?query="],
+["Farmacias Guadalajara","https://www.farmaciasguadalajara.com/SearchDisplay?searchTerm="],
+["San Pablo","https://www.farmaciasanpablo.com.mx/search?text="],
+["Benavides","https://www.farmaciasbenavides.com/search?q="]
+],
 
-{
-nombre:"Walmart",
-url:"https://super.walmart.com.mx/search?q="
-},
+ferreteria: [
+["Home Depot","https://www.homedepot.com.mx/search?q="],
+["Fix Ferreterías","https://www.fixferreterias.com/search?q="],
+["Mercado Libre","https://www.mercadolibre.com.mx/s?k="],
+["Amazon","https://www.amazon.com.mx/s?k="],
+["Walmart","https://super.walmart.com.mx/search?q="]
+],
 
-{
-nombre:"Prixz",
-url:"https://www.prixz.com/search?query="
-},
+electronica: [
+["Amazon","https://www.amazon.com.mx/s?k="],
+["Mercado Libre","https://www.mercadolibre.com.mx/s?k="],
+["Cyberpuerta","https://www.cyberpuerta.mx/index.php?cl=search&searchparam="],
+["DDTech","https://ddtech.mx/buscar?q="],
+["Walmart","https://super.walmart.com.mx/search?q="]
+],
 
-{
-nombre:"Farmacias Guadalajara",
-url:"https://www.farmaciasguadalajara.com/SearchDisplay?searchTerm="
-},
+hogar: [
+["Amazon","https://www.amazon.com.mx/s?k="],
+["Mercado Libre","https://www.mercadolibre.com.mx/s?k="],
+["Walmart","https://super.walmart.com.mx/search?q="],
+["Liverpool","https://www.liverpool.com.mx/tienda?s="],
+["Sears","https://www.sears.com.mx/resultados?q="]
+]
 
-{
-nombre:"Farmacia San Pablo",
-url:"https://www.farmaciasanpablo.com.mx/search?text="
-}
+};
 
-];
+let lista = tiendas[categoria] || tiendas.general;
 
 let html = "";
 
-tiendas.forEach(tienda => {
+lista.forEach(t => {
 
-let enlace =
-tienda.url + encodeURIComponent(producto);
+let nombre = t[0];
+let url = t[1] + encodeURIComponent(producto);
 
 html += `
 <div class="card">
 
-<h3>$`{tienda.nombre}</h3>
+<h3>${nombre}</h3>
 
-<button onclick="window.open('`${enlace}','_blank')">
-Abrir búsqueda
+<button onclick="window.open('${url}','_blank')">
+Buscar en tienda
 </button>
 
 </div>
