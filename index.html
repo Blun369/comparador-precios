@@ -1,0 +1,131 @@
+html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Buscador de Productos</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+padding:20px;
+background:#f5f5f5;
+}
+
+input,button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:8px;
+border:1px solid #ccc;
+box-sizing:border-box;
+}
+
+.card{
+background:white;
+padding:15px;
+margin-top:12px;
+border-radius:10px;
+box-shadow:0 0 5px rgba(0,0,0,.1);
+}
+
+.tienda{
+margin-top:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h2>🔎 Buscador de Productos</h2>
+
+<input
+id="producto"
+placeholder="Escribe el producto"
+>
+
+<button onclick="generarBusqueda()">
+🚀 Generar búsquedas
+</button>
+
+<div id="resultados"></div>
+
+<script>
+
+function generarBusqueda(){
+
+let producto =
+document.getElementById("producto").value.trim();
+
+if(producto===""){
+alert("Escribe un producto");
+return;
+}
+
+const tiendas = [
+
+{
+nombre:"Mercado Libre",
+url:"https://www.mercadolibre.com.mx/"
+},
+
+{
+nombre:"Amazon México",
+url:"https://www.amazon.com.mx/s?k="
+},
+
+{
+nombre:"Walmart",
+url:"https://super.walmart.com.mx/search?q="
+},
+
+{
+nombre:"Prixz",
+url:"https://www.prixz.com/search?query="
+},
+
+{
+nombre:"Farmacias Guadalajara",
+url:"https://www.farmaciasguadalajara.com/SearchDisplay?searchTerm="
+},
+
+{
+nombre:"Farmacia San Pablo",
+url:"https://www.farmaciasanpablo.com.mx/search?text="
+}
+
+];
+
+let html = "";
+
+tiendas.forEach(tienda => {
+
+let enlace =
+tienda.url + encodeURIComponent(producto);
+
+html += `
+<div class="card">
+
+<h3>$`{tienda.nombre}</h3>
+
+<button onclick="window.open('`${enlace}','_blank')">
+Abrir búsqueda
+</button>
+
+</div>
+`;
+
+});
+
+document.getElementById("resultados").innerHTML = html;
+
+}
+
+</script>
+
+</body>
+</html>
